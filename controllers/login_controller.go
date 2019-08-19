@@ -11,6 +11,14 @@ import (
 //验证用户，并返回token
 func LoginHandler(ctx iris.Context) {
 
+	//登录类型: 手机号/验证码、 手机号/密码
+
+	//验证
+
+	//获取用户
+
+	//生成JWT token
+
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256,jwt.StandardClaims{
 		Audience:"user",
 		ExpiresAt:time.Now().Unix()+3600,
@@ -20,7 +28,8 @@ func LoginHandler(ctx iris.Context) {
 		//NotBefore:0,
 		Subject:"APP",
 	})
-	mySigningKey:=[]byte("dKe580xiDDtIhttpClnsBXigizsR9xys")
+	//mySigningKey:=[]byte("dKe580xiDDtIhttpClnsBXigizsR9xys")
+	mySigningKey:=[]byte("85VZQ1eB6%AyjKRv")
 	tokenString, err := jwtToken.SignedString(mySigningKey)
 
 	if err != nil {

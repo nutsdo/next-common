@@ -6,6 +6,8 @@ import (
 	"github.com/kataras/iris/middleware/recover"
 	"github.com/nutsdo/go-next/controllers"
 	"github.com/nutsdo/go-next/middlewares"
+	"github.com/nutsdo/go-next/session"
+	"github.com/nutsdo/go-next/web/auth"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -17,8 +19,7 @@ func RunServer()  {
 	app.Use(logger.New())
 	//app.UseGlobal(middlewares.HmacHandler)
 
-
-	//app.Use(jwtHandler.Serve)
+	app.Use(session.Sess.Handler())
 
 	app.Get("/", func(ctx iris.Context) {
 		ctx.HTML("Hello World")
@@ -58,9 +59,12 @@ func RunServer()  {
 	cashier := app.Party("/cashier")
 	cashier.Party("/payment")
 
-	app.Get("/test/auth",controllers.TestKongHmacSign)
+	app.Get("/web/login", auth.Authorize)
 
-	app.Run(iris.Addr(":8080"), iris.WithoutServerError(iris.ErrServerClosed))
+	app.Get("/test/auth",controllers.TestKongHmacSign)
+	app.Get("/test/session",session.SessionMiddleware)
+
+	app.Run(iris.Addr(":80"), iris.WithoutServerError(iris.ErrServerClosed))
 }
 
 
